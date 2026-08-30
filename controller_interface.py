@@ -4,7 +4,7 @@ class ControllerInterface:
     def __init__(self):
         pygame.init()
         pygame.joystick.init()
-        print(pygame.version.SDL)
+        #print(pygame.version.SDL)
 
         self.controller = None
         self.num_buttons = 0
@@ -30,7 +30,7 @@ class ControllerInterface:
             if self.controller.get_button(i) > 0:
                 self.pressed_buttons.append(i)
 
-        self.left_stick_x = self.controller.get_axis(0)  # negative is left
+        self.left_stick_x = self.controller.get_axis(0)    #get_axis(0)  # negative is left
         self.left_stick_y = self.controller.get_axis(1)  # negative is up
         self.right_stick_x = self.controller.get_axis(3)  # negative is left
         self.right_stick_y = self.controller.get_axis(4)  # negative is up
@@ -76,8 +76,11 @@ class ControllerInterface:
             # no idea what this is, but we don't have any
             self.num_balls = self.controller.get_numballs()
             print(f'number of balls on controller: {self.num_balls}')
+
+            return True
         else:
             print("No controller found.")
+            return False
 
 def check_button_index(index):
     match index:
