@@ -31,9 +31,9 @@ class ControllerInterface:
                 self.pressed_buttons.append(i)
 
         self.left_stick_x = self.controller.get_axis(0)    #get_axis(0)  # negative is left
-        self.left_stick_y = self.controller.get_axis(1)  # negative is up
+        self.left_stick_y = -1.0 * self.controller.get_axis(1)  # negative is up / not anymore
         self.right_stick_x = self.controller.get_axis(3)  # negative is left
-        self.right_stick_y = self.controller.get_axis(4)  # negative is up
+        self.right_stick_y = -1.0 * self.controller.get_axis(4)  # negative is up / not anymore
 
         for i in range(self.num_hats):
             self.hat_x, self.hat_y = self.controller.get_hat(i)
