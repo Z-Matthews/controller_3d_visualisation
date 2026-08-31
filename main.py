@@ -19,15 +19,12 @@ def detect_ports():
 def plt1_animate(i):
     controller.get_controller_inputs()
     app.pages[0].left_axis_plot.update(controller.left_stick_x, controller.left_stick_y,controller.right_stick_x, controller.right_stick_y)
-    # app.pages[0].right_axis_plot.update(controller.right_stick_x, controller.right_stick_y)
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     detect_ports()
     if controller.auto_connect():
-        # thread_1 = threading.Thread(target=controller.get_controller_inputs())
-        # thread_1.start()
         ani1 = animation.FuncAnimation(app.pages[0].left_axis_plot.fig, plt1_animate, interval=10, cache_frame_data=False)
     app.mainloop()
 

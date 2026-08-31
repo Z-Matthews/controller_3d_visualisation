@@ -1,10 +1,13 @@
 import matplotlib.pyplot as plt
+import tkinter as tk
 
 class Plot:
-    def __init__(self, plot_type, title):
+    def __init__(self, plot_type, title, screen_width, screen_height):
         self.fig = None
         self.ax = None
 
+        self.screen_width = screen_width
+        self.screen_height = screen_height
         self.title = title
         self.type = plot_type
         if self.type == 1:
@@ -15,6 +18,12 @@ class Plot:
 
     def initialise_2d_plot(self):
         self.fig, self.ax = plt.subplots(1, 2)
+        print(f'Figure width {int((self.screen_width / 40)*39)}px')
+        print(f'Figure height {int(self.screen_height * 0.75)}px')
+        dpi = 100
+        w = int((self.screen_width / 40)*39) / 100
+        h = int(self.screen_height * 0.75)/ 100
+        self.fig.set_size_inches(w, h)
 
     def initialise_3d_plot(self):
         self.fig = plt.figure()
