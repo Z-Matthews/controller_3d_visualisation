@@ -1,5 +1,6 @@
 import pygame
 
+
 class ControllerInterface:
     def __init__(self):
         pygame.init()
@@ -35,8 +36,7 @@ class ControllerInterface:
         self.right_stick_x = self.controller.get_axis(3)  # negative is left
         self.right_stick_y = -1.0 * self.controller.get_axis(4)  # negative is up / not anymore
 
-        for i in range(self.num_hats):
-            self.hat_x, self.hat_y = self.controller.get_hat(i)
+        self.hat_x, self.hat_y = self.controller.get_hat(0)
 
         # string = f'Lx: {self.left_stick_x}, '
         # string += f'Ly: {self.left_stick_y}, '
