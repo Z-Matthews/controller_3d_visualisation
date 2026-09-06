@@ -12,7 +12,7 @@ from gui.frames.container_frame import ContainerFrame
 # This will be the parent class for all the pages
 
 class PageObject(tk.Frame):
-    def __init__(self, master, title_text, page_index, pop_up_index):
+    def __init__(self, master, title_text, page_index, pop_up_index, num_buttons_page_menu):
         tk.Frame.__init__(self, master)
         self.title_text = title_text
         screen_height = self.winfo_screenheight()
@@ -55,7 +55,7 @@ class PageObject(tk.Frame):
 
         # pack 3-6 buttons into the menu frame
         self.page_buttons = []
-        for button_num in range(5):
+        for button_num in range(num_buttons_page_menu):
             self.page_buttons.append(ZButton(self.menu_frame, text=button_num))
             self.page_buttons[button_num].configure(font=HEADER_FONT)
             self.page_buttons[button_num].pack(side='left', fill='both', expand=True)

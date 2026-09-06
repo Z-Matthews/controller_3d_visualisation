@@ -1,16 +1,17 @@
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from gui.pages.page_object import PageObject
 from gui.controls.z_button import ZButton
-from plotting.digital_twin_plot import Plot3D
+from plotting.two_d_gymbal_plot import Plot
 
-class MainPage(PageObject):
+
+class ControllerPage(PageObject):
     def __init__(self, master, title_text, page_index, pop_up_index, num_buttons_page_menu):
         super().__init__(master, title_text, page_index, pop_up_index, num_buttons_page_menu)
 
         screen_height = self.winfo_screenheight()
         screen_width = self.winfo_screenwidth()
-        self.three_d_plot = Plot3D("Controller - Left stick", screen_width, screen_height)
-        canvas = FigureCanvasTkAgg(self.three_d_plot.fig, master=self.figure_area_frame)
+        self.left_axis_plot = Plot(1, "Controller - Left stick", screen_width, screen_height)
+        canvas = FigureCanvasTkAgg(self.left_axis_plot.fig, master=self.figure_area_frame)
         canvas.draw()
         canvas.get_tk_widget().pack(side='left', fill='both', expand=False)
 
