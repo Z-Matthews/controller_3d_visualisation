@@ -39,7 +39,7 @@ if __name__ == '__main__':
         case 0 | 1: # main page
             ani1 = animation.FuncAnimation(app.pages[0].three_d_plot.fig, plt2_animate, interval=20,
                                            cache_frame_data=False)
-        case 2 | 3:
+        case 2 | 3: # connect blue tooth controller and switch initial show page to 2 to test this
             if controller.auto_connect():
                 ani2 = animation.FuncAnimation(app.pages[2].left_axis_plot.fig, plt1_animate, interval=1,
                                                cache_frame_data=False)
