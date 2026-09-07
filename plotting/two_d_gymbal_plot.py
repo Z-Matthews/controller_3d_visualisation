@@ -18,8 +18,6 @@ class Plot:
 
     def initialise_2d_plot(self):
         self.fig, self.ax = plt.subplots(1, 2)
-        # print(f'Figure width {int((self.screen_width / 40)*39)}px')
-        # print(f'Figure height {int(self.screen_height * 0.75)}px')
         dpi = 100
         w = int((self.screen_width / 40)*39) / dpi
         h = int(self.screen_height * 0.75)/ dpi

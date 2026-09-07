@@ -24,8 +24,6 @@ class Plot3D:
     def initialise_3d_plot(self, view_size=200):
         self.fig = plt.figure()
         self.ax = self.fig.add_subplot(projection='3d')
-        # print(f'Figure width {int((self.screen_width / 40)*39)}px')
-        # print(f'Figure height {int(self.screen_height * 0.75)}px')
         dpi = 100
         w = int((self.screen_width / 40)*39) / dpi
         h = int(self.screen_height * 0.75) / dpi
@@ -44,7 +42,7 @@ class Plot3D:
         # set up the axis
         self.ax.set_xlim([-1*self.view_size, self.view_size])
         self.ax.set_ylim([-1*self.view_size, self.view_size])
-        self.ax.set_zlim([-1*self.view_size, self.view_size])
+        self.ax.set_zlim([0, self.view_size*2])
         self.ax.set_aspect('equal')
         self.ax.grid()
 
@@ -68,16 +66,25 @@ class Plot3D:
         return extruded_object
 
     def update(self):
+        # removes all stuff from previous plot and resets the axis
         self.reset_ax()
 
+        # set up variables and loops
+        shape_count = 0
         polygons = []
         for body in self.bodies:
             for shape in body.shapes:
-                # if len(shape.vertices) > 0:
+
+                # adds filled polygon objects to a list
                 vertices = shape.get_verts_to_plot()
                 polygons.append(Poly3DCollection(vertices, alpha=.7))
 
+                # plots outlines base shape and the extruded shape (shape[0], and shape[1])
+                if shape_count < 2:
+                    x, y, z = shape.get_coordinates_to_plot()
+                    self.ax.plot(x, y, z, color='blue')
+                    shape_count += 1
+
+        # plots all polygons in list
         for polygon in polygons:
             self.ax.add_collection3d(polygon)
-
-        # This is where we plot the shapes
