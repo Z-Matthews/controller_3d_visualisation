@@ -19,6 +19,9 @@ class Plot3D:
 
         self.bodies = []
         self.bodies.append(self.draw_base())
+        self.bodies.append(self.draw_tower(70))
+        self.bodies.append(self.draw_turret_base(100))
+        self.bodies.append(self.draw_turret_top(102.5))
 
 
     def initialise_3d_plot(self, view_size=200):
@@ -44,6 +47,11 @@ class Plot3D:
         self.ax.set_ylim([-1*self.view_size, self.view_size])
         self.ax.set_zlim([0, self.view_size*2])
         self.ax.set_aspect('equal')
+
+        self.ax.set_xlabel("x (mm)")
+        self.ax.set_ylabel("y (mm)")
+        self.ax.set_zlabel("z (mm)")
+
         self.ax.grid()
 
     def draw_base(self):
@@ -55,24 +63,83 @@ class Plot3D:
             x = sin((angle * (pi / 180))) * radius
             y = cos((angle * (pi / 180))) * radius
             # add a condition to make the radius smaller if x > 100
-            if x > 50:
-                x = 50
+            if x > 30:
+                x = 30
             base_circle.add_vertices(x, y, circle_height)
 
         # extrude this into a 3 dimensional object 65mm tall
         extruded_object = ThreeDShape(base_circle, 65)
-
-        # return the generated object
         return extruded_object
+
+    def draw_tower(self, base_height):
+        # draw a circle shape 5mm off the origin plane
+        base_circle = TwoDShape()
+        radius = 110 / 2  # mm
+        circle_height = base_height  # mm
+        last_y = 0
+        last_x = 0
+        for angle in range(180, 360, 10): # only draw half the circle
+            x = sin((angle * (pi / 180))) * radius
+            y = cos((angle * (pi / 180))) * radius
+            last_y = y
+            last_x = x
+            base_circle.add_vertices(x, y, circle_height)
+
+        last_x = last_x + radius
+        base_circle.add_vertices(last_x, last_y, circle_height)
+
+        last_y = last_y - 15
+        base_circle.add_vertices(last_x, last_y, circle_height)
+        last_x = last_x - 27.5
+        base_circle.add_vertices(last_x, last_y, circle_height)
+        last_y = last_y - 80
+        base_circle.add_vertices(last_x, last_y, circle_height)
+        last_x = last_x + 27.5
+        base_circle.add_vertices(last_x, last_y, circle_height)
+        last_y = last_y - 15
+        base_circle.add_vertices(last_x, last_y, circle_height)
+
+        # extrude this into a 3 dimensional object 65mm tall
+        extruded_object = ThreeDShape(base_circle, 30)
+        return extruded_object
+
+    def draw_turret_base(self, height):
+        # draw a circle shape 5mm off the origin plane
+        base_circle = TwoDShape()
+        radius = 40 / 2  # mm
+        circle_height = height  # mm
+        for angle in range(0, 360, 10): # only draw half the circle
+            x = sin((angle * (pi / 180))) * radius
+            y = cos((angle * (pi / 180))) * radius
+            base_circle.add_vertices(x, y, circle_height)
+
+        # extrude this into a 3 dimensional object 65mm tall
+        extruded_object = ThreeDShape(base_circle, 2.5)
+        return extruded_object
+
+    def draw_turret_top(self, height):
+        # draw a circle shape 5mm off the origin plane
+        base_circle = TwoDShape()
+        radius = 40 / 2  # mm
+        circle_height = height  # mm
+        for angle in range(0, 180, 10): # only draw half the circle
+            x = sin((angle * (pi / 180))) * radius
+            y = cos((angle * (pi / 180))) * radius
+            base_circle.add_vertices(x, y, circle_height)
+
+        # extrude this into a 3 dimensional object 65mm tall
+        extruded_object = ThreeDShape(base_circle, 15-2.5)
+        return extruded_object
+
 
     def update(self):
         # removes all stuff from previous plot and resets the axis
         self.reset_ax()
 
         # set up variables and loops
-        shape_count = 0
         polygons = []
         for body in self.bodies:
+            shape_count = 0
             for shape in body.shapes:
 
                 # adds filled polygon objects to a list

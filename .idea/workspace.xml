@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="afdad93e-d6b0-43c2-9b0a-56719c09e5c6" name="Changes" comment="added joystick control object">
+    <list default="true" id="afdad93e-d6b0-43c2-9b0a-56719c09e5c6" name="Changes" comment="Added outline to 3D plot to make features more visually distinct">
+      <change beforePath="$PROJECT_DIR$/.idea/controller_3d_visualisation.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/controller_3d_visualisation.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plotting/digital_twin_plot.py" beforeDir="false" afterPath="$PROJECT_DIR$/plotting/digital_twin_plot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plotting/two_d_gymbal_plot.py" beforeDir="false" afterPath="$PROJECT_DIR$/plotting/two_d_gymbal_plot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/three_d_shapes/three_d_shape.py" beforeDir="false" afterPath="$PROJECT_DIR$/three_d_shapes/three_d_shape.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/three_d_shapes/two_d_shape.py" beforeDir="false" afterPath="$PROJECT_DIR$/three_d_shapes/two_d_shape.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,12 +89,21 @@
       <option name="project" value="LOCAL" />
       <updated>1787863287437</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Added outline to 3D plot to make features more visually distinct">
+      <option name="closed" value="true" />
+      <created>1788778565979</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1788778565979</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="initial commit" />
     <MESSAGE value="added joystick control object" />
-    <option name="LAST_COMMIT_MESSAGE" value="added joystick control object" />
+    <MESSAGE value="Added outline to 3D plot to make features more visually distinct" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added outline to 3D plot to make features more visually distinct" />
   </component>
 </project>
