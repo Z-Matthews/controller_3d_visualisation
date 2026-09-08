@@ -41,6 +41,7 @@ class Plot3D:
         # X = red
         position = Position()
         position.update_dh(theta=0, r=20, d=0, alpha=0)
+        position.calculate_resultant_homogen(origin_position.resultant_homogen)
         x2, y2, z2 = position.get_relative_coordinate()
         x = [origin_position.x, x2]
         y = [origin_position.y, y2]
@@ -50,6 +51,7 @@ class Plot3D:
         # Y = green
         position = Position()
         position.update_dh(theta=90, r=20, d=0, alpha=0)
+        position.calculate_resultant_homogen(origin_position.resultant_homogen)
         x2, y2, z2 = position.get_relative_coordinate()
         x = [origin_position.x, x2]
         y = [origin_position.y, y2]
@@ -59,6 +61,7 @@ class Plot3D:
         # Z = blue
         position = Position()
         position.update_dh(theta=0, r=0, d=20, alpha=0)
+        position.calculate_resultant_homogen(origin_position.resultant_homogen)
         x2, y2, z2 = position.get_relative_coordinate()
         x = [origin_position.x, x2]
         y = [origin_position.y, y2]
@@ -161,8 +164,8 @@ class Plot3D:
     def update(self):
         # removes all stuff from previous plot and resets the axis
         self.reset_ax()
+        self.origin.resultant_homogen = self.origin.homogeneous_transformation
         self.plot_position(self.origin) # x = 'red', y = 'green', z = 'blue'
-        self.bodies[0].change_origin_position(z=50)
         self.bodies[0].calculate_origin_position()
         self.plot_position(self.bodies[0].origin)
 

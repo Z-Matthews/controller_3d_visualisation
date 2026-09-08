@@ -68,11 +68,11 @@ class ThreeDShape:
         # we need to multiply each joint nodes origin by the previous to get the resultant homogen
         for index in range(len(self.positionTracking)):
             if index > 0:
-                self.positionTracking[index].calculate_resultant_homogen(self.positionTracking[index].homogeneous_transformation)
+                self.positionTracking[index].calculate_resultant_homogen(self.positionTracking[index -1].resultant_homogen)
             else:
                 self.positionTracking[index].resultant_homogen = self.positionTracking[index].homogeneous_transformation
-            print(f'homogen_{index}')
-            print(self.positionTracking[index].resultant_homogen)
+            # print(f'homogen_{index}')
+            # print(self.positionTracking[index].resultant_homogen)
 
         self.origin = self.positionTracking[len(self.positionTracking)-1]
 
