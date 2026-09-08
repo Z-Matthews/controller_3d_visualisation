@@ -45,12 +45,13 @@ class TKinterApp(tk.Tk):
 
         # populate dictionary (list of two part tuples)
         for page in self.pages:
-            self.page_dictionary.append((page.title_text, page.page_index))
+            if type(page) == PopUpObject:
+                self.page_dictionary.append((page.title_text, page.pop_up_page_index))
+            else:
+                self.page_dictionary.append((page.title_text, page.page_index))
         print(self.page_dictionary)
 
         self.show_frame(self.current_page_index) # makes sure main page is top page
-
-        print(f'number of pages: {len(self.pages)}')
 
         for page in self.pages:
             if type(page) == PopUpObject:
