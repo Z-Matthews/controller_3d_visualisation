@@ -1,14 +1,18 @@
 import copy
 import numpy as np
-from three_d_shapes.coordinate import Coordinate
+from three_d_shapes.coordinate import Coordinate, Position
 
 class TwoDShape:
     def __init__(self):
         self.vertices = []
+        self.origin = Position()
 
-    def add_vertices(self, x, y, z):
-        coordinate = Coordinate(x, y, z)
-        self.vertices.append(coordinate)
+    def add_vertices(self, position):
+        # position = Position()
+        self.vertices.append(position)
+
+    def update_origin_position(self, origin):
+        self.origin = copy.deepcopy(origin)
 
     def get_coordinates_to_plot(self):
         # generate lists of x, y, and z coordinates
@@ -16,6 +20,7 @@ class TwoDShape:
         y = []
         z = []
         for vertices in self.vertices:
+            vertices.calculate_resultant_homogen(self.origin.resultant_homogen)
             x.append(vertices.x)
             y.append(vertices.y)
             z.append(vertices.z)
@@ -33,6 +38,8 @@ class TwoDShape:
         y = []
         z = []
         for vertices in self.vertices:
+            #self.origin.calculate_resultant_homogen(self.origin.resultant_homogen)
+            vertices.calculate_resultant_homogen(self.origin.resultant_homogen)
             x.append(vertices.x)
             y.append(vertices.y)
             z.append(vertices.z)

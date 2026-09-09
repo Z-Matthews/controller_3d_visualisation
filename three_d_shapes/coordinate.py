@@ -15,9 +15,6 @@ class Position:
         self.x = 0
         self.y = 0
         self.z = 0
-        # self.yaw = 0
-        # self.pitch = 0
-        # self.roll = 0
 
         # theta[0] = joint angle in degrees
         # theta[1] = dh table modifier (angle in degrees)
@@ -74,8 +71,12 @@ class Position:
         self.y = self.homogeneous_transformation[1][3]
         self.z = self.homogeneous_transformation[2][3]
 
-    def calculate_resultant_homogen(self, previous_homogen):
-        self.resultant_homogen = previous_homogen @ self.homogeneous_transformation
+    def calculate_resultant_homogen(self, previous_homogen=None):
+        if previous_homogen is not None:
+            self.resultant_homogen = previous_homogen @ self.homogeneous_transformation
+        else:
+            self.resultant_homogen = self.homogeneous_transformation
+
         self.x = self.resultant_homogen[0][3]
         self.y = self.resultant_homogen[1][3]
         self.z = self.resultant_homogen[2][3]

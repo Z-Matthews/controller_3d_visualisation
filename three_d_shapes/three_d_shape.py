@@ -15,7 +15,7 @@ class ThreeDShape:
 
         # z displacement -----> change d to value of z displacement
         self.positionTracking.append(Position())
-        self.positionTracking[2].update_dh_mods(theta_mod=-90, d_mod=5)
+        self.positionTracking[2].update_dh_mods(theta_mod=-90)
 
         # yaw (angle around z axis) -----> change theta to value of angle around z in degrees (positive is counter-clockwise)
         self.positionTracking.append(Position())
@@ -28,10 +28,10 @@ class ThreeDShape:
         self.positionTracking.append(Position())
         self.positionTracking[5].update_dh_mods(theta_mod=-90)
 
-        self.origin = Position()
+        self.origin = self.positionTracking[5] # Position()
         self.shapes = []
         self.base_shape = shape
-        self.shapes.append(shape)
+        self.shapes.append(shape) # shapes[0] is the same as the base shape and the shape object passed to the init func
         self.colour = colour
 
         self.height = height
@@ -41,27 +41,21 @@ class ThreeDShape:
         # x displacement -----> change r value to x displacement
         if x is not None:
             self.positionTracking[0].update_dh(r=x)
-
         # y displacement -----> change r to value of y displacement
         if y is not None:
             self.positionTracking[1].update_dh(r=y)
-
         # z displacement -----> change d to value of z displacement
         if z is not None:
             self.positionTracking[2].update_dh(d=z)
-
         # yaw (angle around z axis) -----> change theta to value of angle around z in degrees (positive is counter-clockwise)
         if yaw is not None:
             self.positionTracking[3].update_dh(theta=(-1*yaw))
-
         # pitch (angle around y axis)
         if pitch is not None:
             self.positionTracking[4].update_dh(alpha=(-1*pitch))
-
         # roll (angle around x axis)
         if roll is not None:
             self.positionTracking[5].update_dh(alpha=(-1*roll))
-
         self.calculate_origin_position()
 
     def calculate_origin_position(self):
@@ -71,37 +65,41 @@ class ThreeDShape:
                 self.positionTracking[index].calculate_resultant_homogen(self.positionTracking[index -1].resultant_homogen)
             else:
                 self.positionTracking[index].resultant_homogen = self.positionTracking[index].homogeneous_transformation
-            # print(f'homogen_{index}')
-            # print(self.positionTracking[index].resultant_homogen)
 
         self.origin = self.positionTracking[len(self.positionTracking)-1]
 
     def extrude_base_shape(self):
+        # figure object origin position
+        self.calculate_origin_position()
+
+        # make the shape to be extruded have the same origin
+        self.shapes[0].origin = self.origin
+
+        # create an Identical copy of that shape
         new_shape = copy.deepcopy(self.base_shape)
         self.shapes.append(new_shape)
-        for vertices_index in range(len(self.base_shape.vertices)):
-            self.shapes[1].vertices[vertices_index].z = self.base_shape.vertices[vertices_index].z + self.height
 
-        for vertices_index in range(len(self.base_shape.vertices)):
-            self.shapes.append(TwoDShape())
-            current_shape_index = len(self.shapes) - 1
+        # add body height to shape origin height and recalculate resultant position
+        self.shapes[1].origin.update_dh_mods(d_mod=self.shapes[1].origin.d[1] + self.height)
+        self.shapes[1].origin.calculate_resultant_homogen(self.shapes[0].origin.resultant_homogen)
+        # turn the whole shape ccw 90 degrees
+        for vertex in self.shapes[1].vertices:
+            vertex.update_dh_mods(theta_mod=vertex.theta[1] + 90)
 
-            if vertices_index < len(self.base_shape.vertices) - 1:
-                x, y, z = self.base_shape.vertices[vertices_index].get()
-                self.shapes[current_shape_index].add_vertices(x, y, z)
-                x, y, z = self.base_shape.vertices[vertices_index + 1].get()
-                self.shapes[current_shape_index].add_vertices(x, y, z)
-                x, y, z = self.shapes[1].vertices[vertices_index + 1].get()
-                self.shapes[current_shape_index].add_vertices(x, y, z)
-                x, y, z = self.shapes[1].vertices[vertices_index].get()
-                self.shapes[current_shape_index].add_vertices(x, y, z)
-
-            else:
-                x, y, z = self.base_shape.vertices[vertices_index].get()
-                self.shapes[current_shape_index].add_vertices(x, y, z)
-                x, y, z = self.base_shape.vertices[0].get()
-                self.shapes[current_shape_index].add_vertices(x, y, z)
-                x, y, z = self.shapes[1].vertices[0].get()
-                self.shapes[current_shape_index].add_vertices(x, y, z)
-                x, y, z = self.shapes[1].vertices[vertices_index].get()
-                self.shapes[current_shape_index].add_vertices(x, y, z)
+        # # This needs to be re-worked to be the same as the current system
+        # # These are theoretical shapes based on geometry of the base shape, and the extruded shape
+        # for vertices_index in range(len(self.shapes[0].vertices)):
+        #     self.shapes.append(TwoDShape())
+        #     current_shape_index = len(self.shapes) - 1
+        #
+        #     if vertices_index < len(self.shapes[0].vertices) - 1:
+        #         self.shapes[current_shape_index].add_vertices(self.shapes[0].vertices[vertices_index])
+        #         self.shapes[current_shape_index].add_vertices(self.shapes[0].vertices[vertices_index + 1])
+        #         self.shapes[current_shape_index].add_vertices(self.shapes[1].vertices[vertices_index + 1])
+        #         self.shapes[current_shape_index].add_vertices(self.shapes[1].vertices[vertices_index])
+        #
+        #     else:
+        #         self.shapes[current_shape_index].add_vertices(self.shapes[0].vertices[vertices_index])
+        #         self.shapes[current_shape_index].add_vertices(self.shapes[0].vertices[0])
+        #         self.shapes[current_shape_index].add_vertices(self.shapes[1].vertices[0])
+        #         self.shapes[current_shape_index].add_vertices(self.shapes[1].vertices[vertices_index])
