@@ -96,7 +96,7 @@ class Plot3D:
         chord_length = 2 * sqrt((2*radius*sagitta)-(sagitta**2))
         half_chord = chord_length/2
         angle = degrees(sin(half_chord/radius))
-        print("angle = ", angle)
+
         point = Position()
         point.update_dh(theta=angle, r=radius, d=0, alpha=0)
         base_circle.add_vertices(copy.deepcopy(point))
@@ -114,15 +114,22 @@ class Plot3D:
 
         # turn the whole shape ccw 90 degrees
         for vertex in base_circle.vertices:
-            vertex.update_dh_mods(theta_mod=vertex.theta[1]+90)
+            vertex.update_dh_mods(theta_mod=90)
 
         # extrude this into a 3 dimensional object 65mm tall
         extruded_object = ThreeDShape(base_circle, 65, 'blue')
-        extruded_object.change_origin_position(z=5)
+        extruded_object.change_origin_position(z=circle_height)
         return extruded_object
 
     # def draw_tower(self, base_height):
-    #     # draw a circle shape 5mm off the origin plane
+    # #     # draw a circle shape 70mm off the origin plane
+    # base_circle = TwoDShape()
+    # radius = 110 / 2  # mm
+    # circle_height = 30  # mm
+    # sagitta = 41.25  # mm
+    # chord_length = 2 * sqrt((2 * radius * sagitta) - (sagitta ** 2))
+    # half_chord = chord_length / 2
+    # angle = degrees(sin(half_chord / radius))
     #     base_circle = TwoDShape()
     #     radius = 110 / 2  # mm
     #     circle_height = base_height  # mm
@@ -185,9 +192,14 @@ class Plot3D:
     def update(self):
         # removes all stuff from previous plot and resets the axis
         self.reset_ax()
+
+        # change angles / positions / input control variables here
+
+        # re-calculate all resultant homogens and therefore coordinates.
         self.origin.resultant_homogen = self.origin.homogeneous_transformation
         self.plot_position(self.origin) # x = 'red', y = 'green', z = 'blue'
 
+        # factorise this into a plot body function
         # set up variables and loops
         polygons = []
         for body in self.bodies:
@@ -195,6 +207,8 @@ class Plot3D:
             # plot origin
             body.calculate_origin_position()
             self.plot_position(body.origin)
+            self.plot_position(body.shapes[0].origin)
+            self.plot_position(body.shapes[1].origin)
 
             shape_count = 0
             for shape in body.shapes:
@@ -259,6 +273,7 @@ class Plot3D:
                 verts.append(list(zip(x, y, z)))
                 verts = np.array(verts)
 
+                # append to list of matplotlib polygon class objects
                 polygons.append(Poly3DCollection(verts, color=self.bodies[0].colour, alpha=.5))  # alpha=.7
 
         # plots all polygons in list

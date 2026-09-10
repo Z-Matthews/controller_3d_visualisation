@@ -28,7 +28,7 @@ class ThreeDShape:
         self.positionTracking.append(Position())
         self.positionTracking[5].update_dh_mods(theta_mod=-90)
 
-        self.origin = self.positionTracking[5] # Position()
+        self.origin = copy.deepcopy(self.positionTracking[5]) # Position()
         self.shapes = []
         self.base_shape = shape
         self.shapes.append(shape) # shapes[0] is the same as the base shape and the shape object passed to the init func
@@ -56,6 +56,7 @@ class ThreeDShape:
         # roll (angle around x axis)
         if roll is not None:
             self.positionTracking[5].update_dh(alpha=(-1*roll))
+
         self.calculate_origin_position()
 
     def calculate_origin_position(self):
@@ -73,33 +74,15 @@ class ThreeDShape:
         self.calculate_origin_position()
 
         # make the shape to be extruded have the same origin
-        self.shapes[0].origin = self.origin
+        self.shapes[0].origin = copy.deepcopy(self.origin)
 
         # create an Identical copy of that shape
         new_shape = copy.deepcopy(self.base_shape)
         self.shapes.append(new_shape)
 
         # add body height to shape origin height and recalculate resultant position
-        self.shapes[1].origin.update_dh_mods(d_mod=self.shapes[1].origin.d[1] + self.height)
+        self.shapes[1].origin.update_dh_mods(
+            d_mod=self.shapes[1].origin.d[1] + self.height,
+            theta_mod=self.shapes[1].origin.theta[1] + 90 # why is this neccessary, what is turning shape two's origin from shape one after the projection?
+        )
         self.shapes[1].origin.calculate_resultant_homogen(self.shapes[0].origin.resultant_homogen)
-        # turn the whole shape ccw 90 degrees
-        for vertex in self.shapes[1].vertices:
-            vertex.update_dh_mods(theta_mod=vertex.theta[1] + 90)
-
-        # # This needs to be re-worked to be the same as the current system
-        # # These are theoretical shapes based on geometry of the base shape, and the extruded shape
-        # for vertices_index in range(len(self.shapes[0].vertices)):
-        #     self.shapes.append(TwoDShape())
-        #     current_shape_index = len(self.shapes) - 1
-        #
-        #     if vertices_index < len(self.shapes[0].vertices) - 1:
-        #         self.shapes[current_shape_index].add_vertices(self.shapes[0].vertices[vertices_index])
-        #         self.shapes[current_shape_index].add_vertices(self.shapes[0].vertices[vertices_index + 1])
-        #         self.shapes[current_shape_index].add_vertices(self.shapes[1].vertices[vertices_index + 1])
-        #         self.shapes[current_shape_index].add_vertices(self.shapes[1].vertices[vertices_index])
-        #
-        #     else:
-        #         self.shapes[current_shape_index].add_vertices(self.shapes[0].vertices[vertices_index])
-        #         self.shapes[current_shape_index].add_vertices(self.shapes[0].vertices[0])
-        #         self.shapes[current_shape_index].add_vertices(self.shapes[1].vertices[0])
-        #         self.shapes[current_shape_index].add_vertices(self.shapes[1].vertices[vertices_index])
